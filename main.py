@@ -1,7 +1,6 @@
 import asyncio
-import os
 from mitmproxy import options
-from mitmproxy.tools import main, dump
+from mitmproxy.tools import dump
 from mitmproxy.http import HTTPFlow
 import threading
 import json
@@ -68,7 +67,7 @@ class MyCustomAddon:
                 "second": flow.request.query['second'],
                 "result": resJson['result']
             }
-            if path not in paths:
+            if path not in paths and not (path['first'] == path['result'] or path['second'] == path['result']): # Discard paths that are already in the list or in a one request loop
                 paths.append({
                     "first": flow.request.query['first'],
                     "second": flow.request.query['second'],
