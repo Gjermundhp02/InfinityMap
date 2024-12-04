@@ -84,15 +84,14 @@ class MyCustomAddon:
                         objects[resJson['result']]['emoji'] = resJson['emoji']
                 else:
                     objects[resJson['result']] = {"emoji": resJson['emoji'], "isNew": resJson['isNew'], "creates": [], "createdBy": [len(paths) - 1]}
-            print(paths, objects)
             
 
 class ProxyServer(object):
-
-    def __init__(self, proxy_host='localhost', proxy_port=8080):
+    def __init__(self, proxy_host='localhost', proxy_port=8080, addons=[]):
         self.proxy_host = proxy_host
         self.proxy_port = proxy_port
         self.master = None
+        self.addons = addons
 
     async def start_dump(self):
         opts = options.Options(listen_host=self.proxy_host, listen_port=self.proxy_port)
@@ -102,7 +101,7 @@ class ProxyServer(object):
             with_termlog=False,
             with_dumper=False,
         )
-        self.master.addons.add(MyCustomAddon())
+        self.master.addons.add(*self.addons)
         try:
             print("Starting proxy server")
             await self.master.run()
@@ -143,4 +142,4 @@ class ProxyServer(object):
             pThread.join()
 
 
-ProxyServer().start()
+ProxyServer(addons=[MyCustomAddon()]).start()
