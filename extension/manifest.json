@@ -1,0 +1,30 @@
+{
+    "manifest_version": 2,
+    "name": "Borderify",
+    "version": "1.0",
+  
+    "description": "Adds a red border to all webpages matching mozilla.org.",
+
+    "permissions": [
+        "webRequest",
+        "webRequestBlocking",
+        "https://neal.fun/api/infinite-craft/pair",
+        "activeTab"
+    ],
+
+    "background": {
+      "scripts": ["dist/background.js"]
+    },
+
+    "browser_action": {
+        "default_popup": "popup.html"
+    },
+
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["dist/main.js"]
+        }
+    ]
+  }
+  
